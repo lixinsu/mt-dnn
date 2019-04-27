@@ -5,7 +5,11 @@ This PyTorch package implements the Multi-Task Deep Neural Networks (MT-DNN) for
 Xiaodong Liu\*, Pengcheng He\*, Weizhu Chen and Jianfeng Gao<br/>
 Multi-Task Deep Neural Networks for Natural Language Understanding<br/>
 [arXiv version](https://arxiv.org/abs/1901.11504) <br/>
-\*: Equal contribution
+\*: Equal contribution <br/>
+
+Xiaodong Liu, Pengcheng He, Weizhu Chen and Jianfeng Gao<br/>
+Improving Multi-Task Deep Neural Networks via Knowledge Distillation for Natural Language Understanding
+[arXiv version](https://arxiv.org/abs/1904.09482) <br/>
 
 
 ## Quickstart 
@@ -52,7 +56,7 @@ Here, we provide two examples, STS-B and RTE. You can use similar scripts to fin
    You should get about 90.5/90.4 on STS-B dev in terms of Pearson/Spearman correlation. </br>
    + Finetune on the RTE task  </br>
    ```> scripts\run_rte.sh``` </br>
-   You should get about 83.8 on RTE dev in terms of accuracy. </br>  
+   You should get about 83.8 on RTE dev in terms of accuracy. </br>
 
 ### SciTail & SNIL Result reproduce (Domain Adaptation)
 1. Domain Adaptation on SciTail  </br>
@@ -60,6 +64,28 @@ Here, we provide two examples, STS-B and RTE. You can use similar scripts to fin
 
 2. Domain Adaptation on SNLI </br>
   ```>scripts\snli_domain_adaptation_bash.sh```
+
+### TODO
+[ ] Release codes/models MT-DNN with Knowledge Distillation. </br>
+[ ] Publish pretrained Tensorflow checkpoints.
+
+## FAQ
+
+### Do you shared the pretrained mt-dnn models?
+Yes, we released the pretrained shared embedings via MTL which are aligned to BERT base/large models: ```mt_dnn_base.pt``` and ```mt_dnn_large.pt```. </br>
+To obtain the similar models:
+1. run the ```>sh scripts\run_mt_dnn.sh```, and then pick the best checkpoint based on the average dev preformance of MNLI/RTE. </br>
+2. strip the task-specific layers via ```scritps\strip_model.py```. </br>
+
+### Why SciTail/SNLI do not enable SAN?
+For SciTail/SNLI tasks, the purpose is to test generalization of the learned embedding and how easy it is adapted to a new domain instead of complicated model structures for a direct comparison with BERT. Thus, we use a linear projection on the all **domain adaptation** settings.
+
+### What is the difference between V1 and V2
+The difference is in the QNLI dataset. Please refere to the GLUE official homepage for more details. 
+
+### Do you fine-tune single task for your GLUE leaderboard submission? 
+We can use the multi-task refinement model to run the prediction and produce a reasonable result. But to achieve a better result, it requires a fine-tuneing on each task. It is worthing noting the paper in arxiv is a littled out-dated and on the old GLUE dataset. We will update the paper as we mentioned below. 
+
 
 ## Notes and Acknowledgments
 BERT pytorch is from: https://github.com/huggingface/pytorch-pretrained-BERT <br/>
@@ -78,7 +104,14 @@ For now, please cite [arXiv version](https://arxiv.org/abs/1901.11504):
   year={2019}
 }
 
-and a new version of the paper will be shared later. 
+and a new version of the paper will be shared later.
+
+@article{liu2019mt-dnn-kd,
+  title={Improving Multi-Task Deep Neural Networks via Knowledge Distillation for Natural Language Understanding},
+  author={Liu, Xiaodong and He, Pengcheng and Chen, Weizhu and Gao, Jianfeng},
+  journal={arXiv preprint arXiv:1904.09482},
+  year={2019}
+}
 ```
 ***Typo:*** there is no activation fuction in Equation 2. 
 ### Contact Information
